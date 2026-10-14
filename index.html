@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Hola Familia">
+<meta name="theme-color" content="#1f4fa3">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<script>if('serviceWorker' in navigator&&location.protocol==='https:'){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}</script>
+<title>Hola Familia</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Lalezar&family=Vazirmatn:wght@400;600;800&display=swap">
+<style>
+/* Layout: one phone-width column; topics are glazed azulejo tiles on a whitewashed wall, progress is a train route across Spanish cities. */
+:root{
+  --wall:#f6f4ef; --tile:#ffffff; --ink:#1d2433; --soft:#5b6476; --line:#dfe3ea;
+  --cobalt:#1f4fa3; --cobalt-soft:#e3eaf7; --saffron:#e3a21a; --saffron-soft:#fbefd2;
+  --olive:#5f7a2e; --ok:#2f7d4f; --ok-bg:#e2f2e8; --bad:#b4392f; --bad-bg:#f8e1de;
+  --on-accent:#ffffff;
+  --fa:'Vazirmatn',Tahoma,'Segoe UI',sans-serif;
+  --fa-display:'Lalezar','Vazirmatn',Tahoma,sans-serif;
+  --es:'Fraunces',Georgia,'Times New Roman',serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --wall:#141924; --tile:#1d2433; --ink:#eef1f6; --soft:#a5aec0; --line:#2e3748;
+  --cobalt:#7fa6f0; --cobalt-soft:#22314f; --saffron:#f0b840; --saffron-soft:#3a3018;
+  --olive:#a7c46a; --ok:#7fd4a0; --ok-bg:#1d3a2a; --bad:#f2928a; --bad-bg:#43211e; --on-accent:#10141d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --wall:#141924; --tile:#1d2433; --ink:#eef1f6; --soft:#a5aec0; --line:#2e3748;
+  --cobalt:#7fa6f0; --cobalt-soft:#22314f; --saffron:#f0b840; --saffron-soft:#3a3018;
+  --olive:#a7c46a; --ok:#7fd4a0; --ok-bg:#1d3a2a; --bad:#f2928a; --bad-bg:#43211e; --on-accent:#10141d; color-scheme:dark}
+*{box-sizing:border-box}
+html{background:var(--wall)}
+body{background:var(--wall);color:var(--ink);font:16px/1.75 var(--fa);direction:rtl}
+.app{max-width:560px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));padding-block:12px 64px}
+.es{font-family:var(--es);direction:ltr;unicode-bidi:isolate}
+h1,h2,h3{margin:0;line-height:1.3;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
+
+/* Top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--wall);display:flex;align-items:center;gap:8px;padding-block:8px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.who{display:flex;align-items:center;gap:8px;background:var(--tile);border:1.5px solid var(--line);border-radius:99px;padding:4px 12px 4px 6px;font-weight:600}
+.who .av{width:30px;height:30px;border-radius:50%;background:var(--cobalt-soft);display:grid;place-items:center;font-size:18px}
+.pill{display:flex;align-items:center;gap:4px;font-weight:800;font-variant-numeric:tabular-nums;padding:4px 10px;border-radius:99px;background:var(--saffron-soft);color:var(--ink);font-size:15px}
+.spacer{flex:1}
+.iconbtn{border:0;background:transparent;font-size:20px;padding:6px;border-radius:10px}
+
+/* Home */
+.hello{display:grid;gap:4px;margin-bottom:14px}
+.hello h1{font-family:var(--fa-display);font-weight:400;font-size:clamp(28px,7vw,38px);letter-spacing:.01em}
+.hello h1 .es{font-family:var(--es);font-weight:800;color:var(--cobalt)}
+.hello p{color:var(--soft)}
+.hello p.gift{color:var(--cobalt);font-weight:600;font-size:15px;background:var(--cobalt-soft);border-radius:12px;padding:8px 12px;justify-self:start}
+.signoff{text-align:center;color:var(--soft);font-size:13px;margin-top:22px}
+.goal{display:flex;align-items:center;gap:14px;background:var(--tile);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:14px}
+.ring{--p:0;width:58px;height:58px;border-radius:50%;background:conic-gradient(var(--saffron) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center;flex:none}
+.ring b{width:44px;height:44px;border-radius:50%;background:var(--tile);display:grid;place-items:center;font-size:15px;font-variant-numeric:tabular-nums}
+.goal .t{flex:1;min-width:0}
+.goal .t h3{font-size:16px}
+.goal .t p{color:var(--soft);font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:12px 18px;font-weight:800;background:var(--cobalt);color:var(--on-accent)}
+.btn.alt{background:var(--tile);color:var(--cobalt);border:1.5px solid var(--cobalt)}
+.btn.wide{width:100%}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* Route of cities */
+.route{background:var(--tile);border:1px solid var(--line);border-radius:18px;padding:12px 14px;margin-bottom:16px}
+.route h3{font-size:14px;color:var(--soft);font-weight:600;margin-bottom:8px}
+.track{display:flex;align-items:center;overflow-x:auto;padding-bottom:4px;direction:ltr;scrollbar-width:thin}
+.stop{display:grid;justify-items:center;gap:2px;flex:none;width:62px}
+.stop i{width:16px;height:16px;border-radius:50%;border:3px solid var(--line);background:var(--tile)}
+.stop.done i{background:var(--saffron);border-color:var(--saffron)}
+.stop span{font-family:var(--es);font-size:11px;color:var(--soft)}
+.stop.done span{color:var(--ink);font-weight:600}
+.rail{flex:none;width:18px;height:3px;background:var(--line);margin-bottom:18px}
+.rail.done{background:var(--saffron)}
+
+/* Azulejo tiles */
+.sectionlabel{font-size:13px;letter-spacing:.04em;color:var(--soft);font-weight:600;margin:4px 2px 8px}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}
+.tilebtn{position:relative;text-align:right;border:0;border-radius:16px;padding:14px;background:var(--tile);box-shadow:0 0 0 1px var(--line) inset;display:grid;gap:6px;min-height:132px;overflow:hidden}
+.tilebtn::before{content:"";position:absolute;inset:auto -18px -18px auto;width:84px;height:84px;opacity:.16;
+  background:radial-gradient(circle at 50% 50%,var(--cobalt) 0 14%,transparent 15%),
+    conic-gradient(from 45deg,var(--cobalt) 0 25%,transparent 0 50%,var(--cobalt) 0 75%,transparent 0);border-radius:12px;transform:rotate(12deg)}
+.tilebtn .em{font-size:30px;line-height:1}
+.tilebtn h3{font-size:16px;font-weight:800}
+.tilebtn .es{font-size:14px;color:var(--cobalt);font-weight:600}
+.stars{display:flex;gap:2px;font-size:14px;letter-spacing:1px;color:var(--saffron)}
+.stars .off{color:var(--line)}
+.extras{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.extras .tilebtn{min-height:auto;background:var(--cobalt-soft);box-shadow:none}
+.extras .tilebtn::before{display:none}
+
+/* Learn cards */
+.head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.head h2{font-size:20px;font-weight:800;flex:1;min-width:0}
+.back{border:1.5px solid var(--line);background:var(--tile);border-radius:12px;padding:6px 12px;font-weight:600}
+.dots{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px}
+.dots i{flex:1;min-width:8px;height:6px;border-radius:9px;background:var(--line)}
+.dots i.on{background:var(--cobalt)}
+.card{background:var(--tile);border-radius:22px;box-shadow:0 0 0 1px var(--line) inset;padding:26px 18px;display:grid;justify-items:center;gap:10px;text-align:center;margin-bottom:14px}
+.card .pic{font-size:64px;line-height:1.1}
+.card .word{font-size:clamp(30px,8vw,42px);font-weight:800;color:var(--cobalt);line-height:1.2}
+.card .pron{font-size:18px;color:var(--soft)}
+.card .mean{font-size:20px;font-weight:600}
+.say{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.sbtn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--cobalt);color:var(--cobalt);background:transparent;border-radius:99px;padding:8px 16px;font-weight:600}
+.sbtn svg{width:20px;height:20px}
+.nav{display:flex;gap:10px}
+.nav .btn{flex:1}
+
+/* Quiz */
+.q{background:var(--tile);border-radius:22px;box-shadow:0 0 0 1px var(--line) inset;padding:20px 16px;display:grid;gap:14px;margin-bottom:14px}
+.q .ask{font-size:14px;color:var(--soft);font-weight:600}
+.q .prompt{font-size:clamp(24px,6.5vw,32px);font-weight:800;text-align:center}
+.q .prompt.es{color:var(--cobalt)}
+.q .big{display:flex;justify-content:center}
+.choices{display:grid;gap:10px}
+.choice{border:1.5px solid var(--line);background:var(--wall);border-radius:14px;padding:12px 14px;text-align:right;font-weight:600;font-size:17px;display:flex;align-items:center;gap:10px}
+.choice .es{font-size:18px}
+.choice.ok{border-color:var(--ok);background:var(--ok-bg)}
+.choice.bad{border-color:var(--bad);background:var(--bad-bg)}
+.build{min-height:56px;border:2px dashed var(--line);border-radius:14px;padding:8px;display:flex;flex-wrap:wrap;gap:8px;direction:ltr;align-content:flex-start}
+.bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;direction:ltr}
+.chip{border:1.5px solid var(--cobalt);background:var(--tile);color:var(--ink);border-radius:12px;padding:6px 12px;font-family:var(--es);font-size:18px;font-weight:600}
+.chip.used{visibility:hidden}
+.feedback{border-radius:14px;padding:12px 14px;font-weight:600;display:grid;gap:4px}
+.feedback.ok{background:var(--ok-bg);color:var(--ok)}
+.feedback.bad{background:var(--bad-bg);color:var(--bad)}
+.feedback .es{color:var(--ink)}
+
+/* Result */
+.result{display:grid;justify-items:center;gap:12px;text-align:center;padding:20px 8px}
+.result .bigstars{font-size:48px;letter-spacing:6px;color:var(--saffron)}
+.result .bigstars .off{color:var(--line)}
+.result h2{font-family:var(--fa-display);font-weight:400;font-size:32px}
+.result p{color:var(--soft)}
+
+/* Phrasebook / sounds */
+.list{display:grid;gap:10px}
+.row{display:flex;align-items:center;gap:12px;background:var(--tile);border-radius:14px;box-shadow:0 0 0 1px var(--line) inset;padding:10px 12px}
+.row .txt{flex:1;min-width:0;display:grid}
+.row .es{font-size:18px;font-weight:600;color:var(--cobalt)}
+.row small{color:var(--soft);font-size:14px}
+.row .pic{font-size:26px}
+.play{flex:none;width:42px;height:42px;border-radius:50%;border:0;background:var(--cobalt-soft);color:var(--cobalt);display:grid;place-items:center}
+.play svg{width:20px;height:20px}
+.note{background:var(--saffron-soft);border-radius:14px;padding:12px 14px;font-size:14px;margin-bottom:12px}
+.sound{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:center;background:var(--tile);border-radius:14px;box-shadow:0 0 0 1px var(--line) inset;padding:12px 14px}
+.sound .l{font-family:var(--es);font-weight:800;font-size:28px;color:var(--cobalt);grid-row:span 2;min-width:56px;text-align:center}
+.sound small{color:var(--soft)}
+
+/* Family */
+.members{display:grid;gap:10px;margin-bottom:14px}
+.member{display:flex;align-items:center;gap:12px;background:var(--tile);border-radius:14px;box-shadow:0 0 0 1px var(--line) inset;padding:10px 12px;border:0;text-align:right;width:100%}
+.member.on{box-shadow:0 0 0 2px var(--cobalt) inset}
+.member .av{width:42px;height:42px;border-radius:50%;background:var(--cobalt-soft);display:grid;place-items:center;font-size:24px}
+.member .t{flex:1;min-width:0;display:grid}
+.member small{color:var(--soft)}
+.addform{display:grid;gap:10px;background:var(--tile);border-radius:16px;box-shadow:0 0 0 1px var(--line) inset;padding:14px}
+.addform input{font:inherit;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--wall);color:var(--ink)}
+.avs{display:flex;flex-wrap:wrap;gap:8px}
+.avs button{width:44px;height:44px;border-radius:50%;border:2px solid transparent;background:var(--cobalt-soft);font-size:22px}
+.avs button[aria-pressed="true"]{border-color:var(--cobalt)}
+.voicewarn{background:var(--bad-bg);color:var(--bad);border-radius:12px;padding:10px 12px;font-size:14px;margin-bottom:12px}
+canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;height:100%}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.pop{animation:pop .25s ease-out}
+@keyframes pop{from{transform:scale(.96);opacity:.6}to{transform:none;opacity:1}}
+</style>
+
+</head>
+<body>
+<div class="app" id="app"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<script>
+/* ---------- Course content: Castilian Spanish for Persian-speaking newcomers ----------
+   item = [spanish, persian meaning, persian-script pronunciation, picture] */
+var TOPICS=[
+ {id:'saludos',fa:'سلام و احوال‌پرسی',es:'Saludos',em:'👋',city:'Madrid',items:[
+  ['Hola','سلام','اُلا','👋'],['Buenos días','صبح بخیر','بوئنوس دیاس','🌅'],['Buenas tardes','عصر بخیر','بوئناس تاردِس','🌇'],
+  ['Buenas noches','شب بخیر','بوئناس نُچِس','🌙'],['Adiós','خداحافظ','آدیوس','🚪'],['Hasta luego','بعداً می‌بینمت','آستا لوئگُ','⏳'],
+  ['Gracias','ممنون','گراسیاس','🙏'],['Por favor','لطفاً','پُر فابُر','🤲'],['Perdón','ببخشید','پِردُن','🙇'],
+  ['Sí','بله','سی','✅'],['No','نه','نُ','❌'],['¿Cómo estás?','حالت چطوره؟','کُمُ اِستاس؟','🙂'],
+  ['Muy bien, gracias','خیلی خوبم، ممنون','موی بیِن، گراسیاس','😊'],['Me llamo Ana','اسم من آنا است','مِ یامُ آنا','🏷️'],
+  ['¿Cómo te llamas?','اسمت چیه؟','کُمُ تِ یاماس؟','❓'],['Mucho gusto','از آشنایی‌ات خوشوقتم','موچُ گوستُ','🤝']]},
+ {id:'numeros',fa:'عددها و پول',es:'Números',em:'🔢',city:'Toledo',items:[
+  ['uno','یک','اونُ','1️⃣'],['dos','دو','دُس','2️⃣'],['tres','سه','تِرِس','3️⃣'],['cuatro','چهار','کواترُ','4️⃣'],
+  ['cinco','پنج','سینکُ','5️⃣'],['seis','شش','سِیس','6️⃣'],['siete','هفت','سیِتِه','7️⃣'],['ocho','هشت','اُچُ','8️⃣'],
+  ['nueve','نه (عدد ۹)','نوئبِه','9️⃣'],['diez','ده','دیِس','🔟'],['veinte','بیست','بِینتِه','۲۰'],['cien','صد','سیِن','💯'],
+  ['el euro','یورو','اِل اِئورُ','💶'],['¿Cuánto cuesta?','قیمتش چنده؟','کوانتُ کوئستا؟','🏷️'],['Son cinco euros','پنج یورو می‌شود','سُن سینکُ اِئورُس','💶']]},
+ {id:'familia',fa:'خانواده',es:'La familia',em:'👨‍👩‍👧',city:'Segovia',items:[
+  ['la familia','خانواده','لا فامیلیا','👨‍👩‍👧‍👦'],['el padre','پدر','اِل پادرِه','👨'],['la madre','مادر','لا مادرِه','👩'],
+  ['el hijo','پسر (فرزند)','اِل ایخُ','👦'],['la hija','دختر (فرزند)','لا ایخا','👧'],['el hermano','برادر','اِل اِرمانُ','🧑'],
+  ['la hermana','خواهر','لا اِرمانا','👩‍🦱'],['el abuelo','پدربزرگ','اِل آبوئلُ','👴'],['la abuela','مادربزرگ','لا آبوئلا','👵'],
+  ['el bebé','نوزاد','اِل بِبِه','👶'],['el marido','شوهر','اِل ماریدُ','🤵'],['la mujer','همسر، زن','لا موخِر','👰'],
+  ['Esta es mi madre','این مادر من است','اِستا اِس می مادرِه','👩'],['Tengo dos hijos','دو فرزند دارم','تِنگُ دُس ایخُس','👧👦']]},
+ {id:'super',fa:'سوپرمارکت',es:'El supermercado',em:'🛒',city:'Valencia',items:[
+  ['el pan','نان','اِل پان','🍞'],['la leche','شیر','لا لِچِه','🥛'],['el agua','آب','اِل آگوا','💧'],['el huevo','تخم‌مرغ','اِل وئبُ','🥚'],
+  ['el queso','پنیر','اِل کِسُ','🧀'],['la carne','گوشت','لا کارنِه','🥩'],['el pollo','مرغ','اِل پُیُ','🍗'],['el arroz','برنج','اِل آرُس','🍚'],
+  ['la fruta','میوه','لا فروتا','🍇'],['la manzana','سیب','لا مانسانا','🍎'],['el tomate','گوجه‌فرنگی','اِل تُماتِه','🍅'],['la bolsa','کیسه','لا بُلسا','🛍️'],
+  ['Quiero esto, por favor','این را می‌خواهم، لطفاً','کیِرُ اِستُ، پُر فابُر','👉'],['¿Dónde está el pan?','نان کجاست؟','دُندِه اِستا اِل پان؟','🍞']]},
+ {id:'colegio',fa:'مدرسه',es:'El colegio',em:'🎒',city:'Salamanca',items:[
+  ['el colegio','مدرسه','اِل کُلِخیُ','🏫'],['la profesora','خانم معلم','لا پرُفِسُرا','👩‍🏫'],['el profesor','آقای معلم','اِل پرُفِسُر','👨‍🏫'],
+  ['el libro','کتاب','اِل لیبرُ','📕'],['el cuaderno','دفتر','اِل کواِدرنُ','📓'],['el lápiz','مداد','اِل لاپیس','✏️'],['la mochila','کوله‌پشتی','لا مُچیلا','🎒'],
+  ['la clase','کلاس','لا کلاسِه','🪑'],['el amigo','دوست (پسر)','اِل آمیگُ','🧒'],['la amiga','دوست (دختر)','لا آمیگا','👧'],['el recreo','زنگ تفریح','اِل رِکرِئُ','⚽'],
+  ['No entiendo','نمی‌فهمم','نُ اِنتیِندُ','🤔'],['¿Puedo ir al baño?','می‌توانم به دستشویی بروم؟','پوئدُ ایر آل بانیُ؟','🚻'],['¿Puedes repetir?','می‌شود تکرار کنی؟','پوئدِس رِپِتیر؟','🔁']]},
+ {id:'ciudad',fa:'شهر و رفت‌وآمد',es:'La ciudad',em:'🚌',city:'Barcelona',items:[
+  ['la calle','خیابان','لا کایِه','🛣️'],['el autobús','اتوبوس','اِل آئوتُبوس','🚌'],['el metro','مترو','اِل مِترُ','🚇'],['el tren','قطار','اِل تِرِن','🚆'],
+  ['el billete','بلیت','اِل بیِتِه','🎫'],['la parada','ایستگاه اتوبوس','لا پارادا','🚏'],['a la derecha','سمت راست','آ لا دِرِچا','👉'],['a la izquierda','سمت چپ','آ لا ایسکیِردا','👈'],
+  ['todo recto','مستقیم','تُدُ رِکتُ','⬆️'],['cerca','نزدیک','سِرکا','📍'],['lejos','دور','لِخُس','🗺️'],
+  ['¿Dónde está la estación?','ایستگاه قطار کجاست؟','دُندِه اِستا لا اِستاسیُن؟','🚉'],['Un billete, por favor','یک بلیت، لطفاً','اون بیِتِه، پُر فابُر','🎫']]},
+ {id:'casa',fa:'خانه',es:'La casa',em:'🏠',city:'Granada',items:[
+  ['la casa','خانه','لا کاسا','🏠'],['el piso','آپارتمان','اِل پیسُ','🏢'],['la habitación','اتاق','لا آبیتاسیُن','🛏️'],['la cocina','آشپزخانه','لا کُسینا','🍳'],
+  ['el baño','حمام و دستشویی','اِل بانیُ','🛁'],['la puerta','در','لا پوئرتا','🚪'],['la ventana','پنجره','لا بِنتانا','🪟'],['la mesa','میز','لا مِسا','🍽️'],
+  ['la silla','صندلی','لا سیا','🪑'],['la cama','تخت','لا کاما','🛌'],['la llave','کلید','لا یابِه','🔑'],['el alquiler','اجاره‌بها','اِل آلکیلِر','💶'],
+  ['No hay agua caliente','آب گرم نداریم','نُ آی آگوا کالیِنتِه','🚿']]},
+ {id:'medico',fa:'دکتر و داروخانه',es:'El médico',em:'🩺',city:'Córdoba',items:[
+  ['el médico','دکتر','اِل مِدیکُ','🩺'],['el hospital','بیمارستان','اِل اُسپیتال','🏥'],['la farmacia','داروخانه','لا فارماسیا','💊'],['la cita','نوبت','لا سیتا','📅'],
+  ['la fiebre','تب','لا فیِبرِه','🤒'],['Me duele la cabeza','سرم درد می‌کند','مِ دوئلِه لا کابِسا','🤕'],['Me duele la barriga','شکمم درد می‌کند','مِ دوئلِه لا باریگا','🤢'],
+  ['Estoy enfermo','مریضم (آقا)','اِستُی اِنفِرمُ','😷'],['Estoy enferma','مریضم (خانم)','اِستُی اِنفِرما','😷'],['la tarjeta sanitaria','کارت درمانی','لا تارخِتا سانیتاریا','💳'],
+  ['¡Ayuda!','کمک!','آیودا!','🆘'],['Llame al ciento doce','با ۱۱۲ تماس بگیرید','یامِه آل سیِنتُ دُسِه','🚑']]},
+ {id:'tramites',fa:'کارهای اداری',es:'Los trámites',em:'📝',city:'Sevilla',items:[
+  ['el ayuntamiento','شهرداری','اِل آیونتامیِنتُ','🏛️'],['el empadronamiento','ثبت نشانی محل سکونت','اِل اِمپادرُنامیِنتُ','📝'],['el pasaporte','پاسپورت','اِل پاساپُرتِه','🛂'],
+  ['el banco','بانک','اِل بانکُ','🏦'],['la cuenta del banco','حساب بانکی','لا کوئنتا دِل بانکُ','💳'],['el formulario','فرم','اِل فُرمولاریُ','📄'],['la firma','امضا','لا فیرما','✍️'],
+  ['la cita previa','نوبت قبلی (اینترنتی)','لا سیتا پرِبیا','💻'],['Tengo una cita','نوبت دارم','تِنگُ اونا سیتا','📅'],['No hablo bien español','اسپانیایی را خوب صحبت نمی‌کنم','نُ ابلُ بیِن اِسپانیُل','🗣️'],
+  ['¿Habla inglés?','انگلیسی صحبت می‌کنید؟','ابلا اینگلِس؟','💬'],['Más despacio, por favor','آهسته‌تر لطفاً','ماس دِسپاسیُ، پُر فابُر','🐢']]},
+ {id:'tiempo',fa:'روزها و ساعت',es:'El tiempo',em:'📅',city:'Bilbao',items:[
+  ['hoy','امروز','اُی','📅'],['mañana','فردا','مانیانا','⏭️'],['ayer','دیروز','آیِر','⏮️'],['lunes','دوشنبه','لونِس','1'],['martes','سه‌شنبه','مارتِس','2'],
+  ['miércoles','چهارشنبه','میِرکُلِس','3'],['jueves','پنجشنبه','خوئبِس','4'],['viernes','جمعه','بیِرنِس','5'],['sábado','شنبه','سابادُ','6'],['domingo','یکشنبه','دُمینگُ','7'],
+  ['¿Qué hora es?','ساعت چند است؟','کِه اُرا اِس؟','⏰'],['Son las tres','ساعت سه است','سُن لاس تِرِس','🕒']]},
+ {id:'comer',fa:'رستوران و کافه',es:'El restaurante',em:'☕',city:'Málaga',items:[
+  ['el café','قهوه','اِل کافِه','☕'],['el té','چای','اِل تِه','🍵'],['el zumo','آبمیوه','اِل سومُ','🧃'],['la carta','منو','لا کارتا','📋'],
+  ['el camarero','گارسون','اِل کامارِرُ','🧑‍🍳'],['la tapa','پیش‌غذای کوچک','لا تاپا','🫒'],['el helado','بستنی','اِل اِلادُ','🍦'],['¡Qué rico!','چه خوشمزه!','کِه ریکُ!','😋'],
+  ['Una mesa para cuatro','یک میز برای چهار نفر','اونا مِسا پارا کواترُ','🍽️'],['Sin cerdo, por favor','بدون گوشت خوک، لطفاً','سین سِردُ، پُر فابُر','🚫'],
+  ['La cuenta, por favor','صورت‌حساب، لطفاً','لا کوئنتا، پُر فابُر','🧾']]},
+ {id:'colores',fa:'رنگ‌ها و لباس',es:'Los colores',em:'🎨',city:'Zaragoza',items:[
+  ['rojo','قرمز','رُخُ','🔴'],['azul','آبی','آسول','🔵'],['verde','سبز','بِردِه','🟢'],['amarillo','زرد','آماریُ','🟡'],['negro','سیاه','نِگرُ','⚫'],
+  ['blanco','سفید','بلانکُ','⚪'],['naranja','نارنجی','نارانخا','🟠'],['morado','بنفش','مُرادُ','🟣'],['la camiseta','تی‌شرت','لا کامیسِتا','👕'],
+  ['los zapatos','کفش','لُس ساپاتُس','👟'],['el abrigo','پالتو','اِل آبریگُ','🧥'],['Me gusta el azul','رنگ آبی را دوست دارم','مِ گوستا اِل آسول','💙']]}
+];
+var EMERGENCY=[
+ ['¡Ayuda!','کمک!','آیودا!','🆘'],['Llame al ciento doce','با ۱۱۲ تماس بگیرید (اورژانس)','یامِه آل سیِنتُ دُسِه','🚑'],
+ ['Necesito un médico','به دکتر نیاز دارم','نِسِسیتُ اون مِدیکُ','🩺'],['Estoy perdido','گم شده‌ام','اِستُی پِردیدُ','🧭'],
+ ['No hablo bien español','اسپانیایی را خوب صحبت نمی‌کنم','نُ ابلُ بیِن اِسپانیُل','🗣️'],['¿Habla inglés?','انگلیسی صحبت می‌کنید؟','ابلا اینگلِس؟','💬'],
+ ['Más despacio, por favor','آهسته‌تر لطفاً','ماس دِسپاسیُ، پُر فابُر','🐢'],['¿Puede repetir?','می‌شود تکرار کنید؟','پوئدِه رِپِتیر؟','🔁'],
+ ['¿Dónde está el baño?','دستشویی کجاست؟','دُندِه اِستا اِل بانیُ؟','🚻'],['¿Cuánto cuesta?','قیمتش چنده؟','کوانتُ کوئستا؟','🏷️'],
+ ['Soy de Irán','اهل ایرانم','سُی دِ ایران','🌍'],['Vivo aquí','اینجا زندگی می‌کنم','بیبُ آکی','🏠'],
+ ['Mi dirección es…','نشانی من … است','می دیرِکسیُن اِس','📍'],['Gracias por su ayuda','ممنون از کمکتان','گراسیاس پُر سو آیودا','🙏']];
+var SOUNDS=[
+ ['j','مثل «خ»','José، jamón','خُسِه، خامُن'],['ge / gi','مثل «خ»','gente، Gibraltar','خِنتِه، خیبرالتار'],['ll / y','مثل «ی»','llave، yo','یابِه، یُ'],
+ ['ñ','مثل «نی»','España، niño','اِسپانیا، نینیُ'],['h','خوانده نمی‌شود','hola، hijo','اُلا، ایخُ'],['v','مثل «ب»','vale، ventana','بالِه، بِنتانا'],
+ ['z / ce / ci','در اسپانیا شبیه th انگلیسی؛ «س» هم فهمیده می‌شود','zumo، cinco','سومُ، سینکُ'],['rr','«ر» غلتان و کشیده','perro، arroz','پِرّو، آرُّس'],
+ ['qu','مثل «ک»','queso، aquí','کِسُ، آکی'],['¿ ¡','علامت سؤال و تعجب در اول جمله هم می‌آید','¿Cómo estás?','کُمُ اِستاس؟']];
+
+/* ---------- State (per device; per family member) ---------- */
+var KEY='hola-familia-v1';
+function load(){try{var s=JSON.parse(localStorage.getItem(KEY));if(s&&s.members&&s.members.length)return s}catch(e){}
+  return {cur:0,members:[{name:'من',av:'🧑',stars:{},seen:{},xp:0,days:[],today:{d:'',n:0}}]}}
+var S=load();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function M(){return S.members[S.cur]||S.members[0]}
+function todayStr(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+function streak(m){var set={};(m.days||[]).forEach(function(d){set[d]=1});var n=0,d=new Date();
+  if(!set[todayStr()])d.setDate(d.getDate()-1);
+  for(;;){var k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(set[k]){n++;d.setDate(d.getDate()-1)}else break}return n}
+function totalStars(m){var t=0;for(var k in m.stars)t+=m.stars[k];return t}
+function markDay(m){var t=todayStr();if(m.days.indexOf(t)<0)m.days.push(t);if(m.days.length>400)m.days=m.days.slice(-400);
+  if(m.today.d!==t)m.today={d:t,n:0};m.today.n++}
+var GOAL=2;
+
+/* ---------- Speech (browser voice, Spain Spanish first) ---------- */
+var VOICE=null,HASVOICE=true;
+function pickVoice(){if(!('speechSynthesis' in window)){HASVOICE=false;return}
+  var vs=speechSynthesis.getVoices();if(!vs.length)return;
+  VOICE=vs.find(function(v){return v.lang==='es-ES'||v.lang==='es_ES'})||vs.find(function(v){return /^es/i.test(v.lang)})||null;
+  HASVOICE=!!VOICE}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}else HASVOICE=false;
+function say(t,slow){if(!('speechSynthesis' in window))return;try{speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(t.replace(/…/g,''));u.lang='es-ES';if(VOICE)u.voice=VOICE;u.rate=slow?0.6:0.9;speechSynthesis.speak(u)}catch(e){}}
+var SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+var SLOW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15c0-4 3-7 8-7s8 3 8 7H3z"/><path d="M19 15h2a2 2 0 0 0 0-4"/><path d="M6 15v3M16 15v3"/></svg>';
+
+/* ---------- Helpers ---------- */
+var app=document.getElementById('app');
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function fa(n){return Number(n).toLocaleString('fa-IR')}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function starHtml(n,cls){var h='';for(var i=0;i<3;i++)h+=i<n?'★':'<span class="off">★</span>';return '<span class="'+(cls||'stars')+'" aria-label="'+fa(n)+' ستاره از ۳">'+h+'</span>'}
+function bar(){var m=M();return '<div class="bar"><button class="who" id="who" aria-label="انتخاب عضو خانواده"><span class="av">'+esc(m.av)+'</span>'+esc(m.name)+'</button><span class="spacer"></span>'+
+  '<span class="pill" title="ستاره‌ها">★ '+fa(totalStars(m))+'</span><span class="pill" title="روزهای پشت سر هم">🔥 '+fa(streak(m))+'</span>'+
+  '<button class="iconbtn" id="home" aria-label="صفحه اصلی">🏠</button></div>'}
+function wireBar(){var w=document.getElementById('who');if(w)w.onclick=family;var h=document.getElementById('home');if(h)h.onclick=home}
+function voiceWarn(){return HASVOICE?'':'<div class="voicewarn">صدای اسپانیایی روی این دستگاه پیدا نشد. در تنظیمات گوشی، بخش «تبدیل متن به گفتار»، زبان اسپانیایی (Español) را نصب کنید تا تلفظ‌ها پخش شوند.</div>'}
+
+/* ---------- Home ---------- */
+function home(){var m=M();var t=todayStr();var n=m.today.d===t?m.today.n:0;
+  var next=TOPICS.find(function(x){return !m.stars[x.id]})||TOPICS.find(function(x){return m.stars[x.id]<3})||TOPICS[0];
+  var route='';TOPICS.forEach(function(x,i){var d=!!m.stars[x.id];if(i)route+='<span class="rail'+(d?' done':'')+'"></span>';route+='<span class="stop'+(d?' done':'')+'"><i></i><span>'+x.city+'</span></span>'});
+  var done=TOPICS.filter(function(x){return m.stars[x.id]}).length;
+  app.innerHTML=bar()+voiceWarn()+
+   '<div class="hello"><h1><span class="es">¡Hola!</span> '+esc(m.name==='من'?'':m.name)+'</h1><p>هر روز چند دقیقه؛ با گوش دادن، دیدن و بازی، اسپانیایی را برای زندگی در اسپانیا یاد بگیرید.</p><p class="gift">هدیه‌ای از طرف میلاد، برای شروع زندگی تازه‌تان در اسپانیا ♥</p></div>'+
+   '<div class="goal"><div class="ring" style="--p:'+Math.min(100,n/GOAL*100)+'"><b>'+fa(Math.min(n,GOAL))+'/'+fa(GOAL)+'</b></div><div class="t"><h3>هدف امروز: '+fa(GOAL)+' تمرین</h3><p>درس بعدی: '+esc(next.fa)+'</p></div>'+
+   '<button class="btn" id="go">شروع</button></div>'+
+   '<div class="route"><h3>سفر شما در اسپانیا: '+fa(done)+' از '+fa(TOPICS.length)+' شهر</h3><div class="track">'+route+'</div></div>'+
+   '<div class="sectionlabel">درس‌ها</div><div class="tiles">'+TOPICS.map(function(x){return '<button class="tilebtn" data-t="'+x.id+'"><span class="em" aria-hidden="true">'+x.em+'</span><h3>'+esc(x.fa)+'</h3><span class="es">'+esc(x.es)+'</span>'+starHtml(m.stars[x.id]||0)+'</button>'}).join('')+'</div>'+
+   '<div class="sectionlabel">همیشه دم دست</div><div class="extras"><button class="tilebtn" id="emer"><span class="em" aria-hidden="true">🆘</span><h3>جمله‌های ضروری</h3><span class="es">Frases útiles</span></button>'+
+   '<button class="tilebtn" id="snd"><span class="em" aria-hidden="true">🔤</span><h3>صداهای اسپانیایی</h3><span class="es">Los sonidos</span></button></div>'+
+   '<p class="signoff">ساخته‌شده با محبت، از طرف میلاد</p>';
+  wireBar();document.getElementById('go').onclick=function(){learn(next.id)};
+  app.querySelectorAll('[data-t]').forEach(function(b){b.onclick=function(){learn(b.dataset.t)}});
+  document.getElementById('emer').onclick=emergency;document.getElementById('snd').onclick=sounds;window.scrollTo(0,0)}
+
+/* ---------- Learn ---------- */
+function learn(id,i){var T=TOPICS.find(function(x){return x.id===id});i=i||0;var it=T.items[i];var m=M();m.seen[id]=Math.max(m.seen[id]||0,i+1);save();
+  var dots='';T.items.forEach(function(_,k){dots+='<i class="'+(k<=i?'on':'')+'"></i>'});
+  app.innerHTML=bar()+'<div class="head"><button class="back" id="bk">بازگشت</button><h2>'+esc(T.fa)+' <span class="es" style="font-size:15px;color:var(--soft);font-weight:600">'+esc(T.es)+'</span></h2></div>'+
+   '<div class="dots" aria-label="کارت '+fa(i+1)+' از '+fa(T.items.length)+'">'+dots+'</div>'+
+   '<div class="card pop"><div class="pic" aria-hidden="true">'+it[3]+'</div><div class="word es">'+esc(it[0])+'</div><div class="pron">'+esc(it[2])+'</div><div class="mean">'+esc(it[1])+'</div>'+
+   '<div class="say"><button class="sbtn" id="s1">'+SPK+' گوش کن</button><button class="sbtn" id="s2">'+SLOW+' آهسته</button></div></div>'+
+   '<div class="nav">'+(i>0?'<button class="btn alt" id="pv">قبلی</button>':'')+(i<T.items.length-1?'<button class="btn" id="nx">بعدی</button>':'<button class="btn" id="qz">بریم برای بازی!</button>')+'</div>'+
+   (i<T.items.length-1?'<p style="text-align:center;margin-top:12px"><button class="back" id="skip">مستقیم به بازی</button></p>':'');
+  wireBar();document.getElementById('bk').onclick=home;
+  document.getElementById('s1').onclick=function(){say(it[0])};document.getElementById('s2').onclick=function(){say(it[0],true)};
+  var pv=document.getElementById('pv');if(pv)pv.onclick=function(){learn(id,i-1)};
+  var nx=document.getElementById('nx');if(nx)nx.onclick=function(){learn(id,i+1)};
+  var qz=document.getElementById('qz');if(qz)qz.onclick=function(){quiz(id)};
+  var sk=document.getElementById('skip');if(sk)sk.onclick=function(){quiz(id)};
+  if(LEARN_AUTOPLAY)say(it[0]);window.scrollTo(0,0)}
+var LEARN_AUTOPLAY=false;
+document.addEventListener('click',function(){LEARN_AUTOPLAY=true},{once:true});
+
+/* ---------- Quiz ---------- */
+function makeQuiz(T){var items=shuffle(T.items).slice(0,Math.min(8,T.items.length));
+  return items.map(function(it,k){var words=it[0].replace(/[¿?¡!,.…]/g,' ').trim().split(/\s+/);
+    var types=['es2fa','fa2es','listen'];if(words.length>=3)types.push('build','build');
+    var type=types[(k+Math.floor(Math.random()*types.length))%types.length];
+    var others=shuffle(T.items.filter(function(x){return x!==it})).slice(0,3);
+    return {it:it,type:type,opts:shuffle([it].concat(others)),words:words}})}
+function quiz(id){var T=TOPICS.find(function(x){return x.id===id});var Q=makeQuiz(T),qi=0,mistakes=0;
+  function show(){var q=Q[qi],it=q.it;var dots='';Q.forEach(function(_,k){dots+='<i class="'+(k<qi?'on':'')+'"></i>'});
+    var head=bar()+'<div class="head"><button class="back" id="bk">خروج</button><h2>بازی: '+esc(T.fa)+'</h2></div><div class="dots">'+dots+'</div>';
+    var body='';
+    if(q.type==='es2fa')body='<div class="ask">معنی این چیست؟</div><div class="prompt es">'+esc(it[0])+'</div><div class="say"><button class="sbtn" id="s1">'+SPK+' گوش کن</button></div>'+
+      '<div class="choices">'+q.opts.map(function(o,k){return '<button class="choice" data-k="'+k+'">'+esc(o[1])+'</button>'}).join('')+'</div>';
+    if(q.type==='fa2es')body='<div class="ask">به اسپانیایی کدام است؟</div><div class="prompt"><span aria-hidden="true">'+it[3]+'</span> '+esc(it[1])+'</div>'+
+      '<div class="choices">'+q.opts.map(function(o,k){return '<button class="choice" data-k="'+k+'"><span class="es">'+esc(o[0])+'</span></button>'}).join('')+'</div>';
+    if(q.type==='listen')body='<div class="ask">گوش کن و درست را انتخاب کن</div><div class="big say"><button class="sbtn" id="s1" style="font-size:18px;padding:14px 26px">'+SPK+' دوباره پخش کن</button><button class="sbtn" id="s2">'+SLOW+' آهسته</button></div>'+
+      '<div class="choices">'+q.opts.map(function(o,k){return '<button class="choice" data-k="'+k+'"><span class="es">'+esc(o[0])+'</span></button>'}).join('')+'</div>';
+    if(q.type==='build'){var bank=shuffle(q.words.map(function(w,k){return {w:w,k:k}}));
+      body='<div class="ask">جمله را بساز: «'+esc(it[1])+'»</div><div class="build" id="bd" aria-live="polite"></div><div class="bank" id="bn">'+bank.map(function(b,k){return '<button class="chip" data-b="'+k+'">'+esc(b.w)+'</button>'}).join('')+'</div>'+
+        '<div class="nav"><button class="btn alt" id="clr">پاک کن</button><button class="btn" id="chk" disabled>بررسی</button></div>';q.bank=bank}
+    app.innerHTML=head+'<div class="q pop">'+body+'<div id="fb"></div></div>';
+    wireBar();document.getElementById('bk').onclick=home;
+    var s1=document.getElementById('s1');if(s1)s1.onclick=function(){say(it[0])};var s2=document.getElementById('s2');if(s2)s2.onclick=function(){say(it[0],true)};
+    if(q.type==='listen'||q.type==='es2fa')say(it[0]);
+    if(q.type==='build'){var picked=[];var bd=document.getElementById('bd'),chk=document.getElementById('chk');
+      function draw(){bd.innerHTML=picked.map(function(p,k){return '<button class="chip" data-p="'+k+'">'+esc(q.bank[p].w)+'</button>'}).join('');chk.disabled=picked.length!==q.words.length;
+        app.querySelectorAll('#bn .chip').forEach(function(c){c.classList.toggle('used',picked.indexOf(+c.dataset.b)>=0)})}
+      app.querySelectorAll('#bn .chip').forEach(function(c){c.onclick=function(){var b=+c.dataset.b;if(picked.indexOf(b)<0){picked.push(b);draw()}}});
+      bd.onclick=function(e){var c=e.target.closest('[data-p]');if(c){picked.splice(+c.dataset.p,1);draw()}};
+      document.getElementById('clr').onclick=function(){picked=[];draw()};
+      chk.onclick=function(){var ans=picked.map(function(p){return q.bank[p].w}).join(' ');var ok=ans===q.words.join(' ');finish(ok);chk.disabled=true;document.getElementById('clr').disabled=true}}
+    else app.querySelectorAll('.choice').forEach(function(b){b.onclick=function(){var o=q.opts[+b.dataset.k];var ok=o===it;
+      app.querySelectorAll('.choice').forEach(function(x){x.disabled=true;if(q.opts[+x.dataset.k]===it)x.classList.add('ok')});if(!ok)b.classList.add('bad');finish(ok)}});
+    window.scrollTo(0,0)}
+  function finish(ok){var it=Q[qi].it;if(!ok)mistakes++;
+    var fb=document.getElementById('fb');fb.innerHTML='<div class="feedback '+(ok?'ok':'bad')+'">'+(ok?'آفرین! درست بود.':'اشکالی ندارد، جواب درست این بود:')+
+      '<span class="es">'+esc(it[0])+'</span><span>'+esc(it[2])+' · '+esc(it[1])+'</span></div><button class="btn wide" id="nq" style="margin-top:10px">'+(qi<Q.length-1?'بعدی':'دیدن نتیجه')+'</button>';
+    if(ok)say(it[0]);document.getElementById('nq').onclick=function(){qi++;if(qi<Q.length)show();else result()};document.getElementById('nq').focus()}
+  function result(){var stars=mistakes===0?3:mistakes<=2?2:1;var m=M();var prev=m.stars[id]||0;m.stars[id]=Math.max(prev,stars);m.xp+=10*stars;markDay(m);save();
+    var nextT=TOPICS[(TOPICS.indexOf(T)+1)%TOPICS.length];
+    app.innerHTML=bar()+'<div class="result pop">'+starHtml(stars,'bigstars')+'<h2>'+(stars===3?'¡Perfecto! عالی بود':stars===2?'¡Muy bien! خیلی خوب':'¡Bien! ادامه بده')+'</h2>'+
+     '<p>'+fa(Q.length-mistakes)+' جواب درست از '+fa(Q.length)+'. شهر <span class="es">'+T.city+'</span> در سفر شما روشن شد.</p>'+
+     '<div class="nav" style="width:100%"><button class="btn alt" id="again">دوباره</button><button class="btn" id="nt">درس بعد: '+esc(nextT.fa)+'</button></div>'+
+     '<button class="back" id="hm">صفحه اصلی</button></div>';
+    wireBar();document.getElementById('again').onclick=function(){quiz(id)};document.getElementById('nt').onclick=function(){learn(nextT.id)};document.getElementById('hm').onclick=home;
+    if(stars===3)confetti()}
+  show()}
+
+/* ---------- Phrasebook & sounds ---------- */
+function rows(list){return '<div class="list">'+list.map(function(x,k){return '<div class="row"><span class="pic" aria-hidden="true">'+x[3]+'</span><div class="txt"><span class="es">'+esc(x[0])+'</span><small>'+esc(x[2])+' · '+esc(x[1])+'</small></div><button class="play" data-k="'+k+'" aria-label="پخش">'+SPK+'</button></div>'}).join('')+'</div>'}
+function emergency(){app.innerHTML=bar()+voiceWarn()+'<div class="head"><button class="back" id="bk">بازگشت</button><h2>جمله‌های ضروری</h2></div>'+
+  '<div class="note">شماره اورژانس در اسپانیا و همه اروپا <b>۱۱۲</b> است؛ رایگان و شبانه‌روزی. اپراتورها معمولاً انگلیسی هم صحبت می‌کنند.</div>'+rows(EMERGENCY);
+  wireBar();document.getElementById('bk').onclick=home;app.querySelectorAll('.play').forEach(function(b){b.onclick=function(){say(EMERGENCY[+b.dataset.k][0])}});window.scrollTo(0,0)}
+function sounds(){app.innerHTML=bar()+voiceWarn()+'<div class="head"><button class="back" id="bk">بازگشت</button><h2>صداهای اسپانیایی</h2></div>'+
+  '<div class="note">اسپانیایی تقریباً همان‌طور خوانده می‌شود که نوشته می‌شود. این چند حرف با فارسی و انگلیسی فرق دارند. روی هر مثال بزنید تا بشنوید.</div><div class="list">'+
+  SOUNDS.map(function(x,k){return '<button class="sound" data-k="'+k+'" style="border:0;text-align:right;width:100%"><span class="l">'+esc(x[0])+'</span><b>'+esc(x[1])+'</b><small><span class="es">'+esc(x[2])+'</span> ← '+esc(x[3])+'</small></button>'}).join('')+'</div>';
+  wireBar();document.getElementById('bk').onclick=home;app.querySelectorAll('.sound').forEach(function(b){b.onclick=function(){say(SOUNDS[+b.dataset.k][2].replace('،',','))}});window.scrollTo(0,0)}
+
+/* ---------- Family members ---------- */
+var AVS=['🧑','👩','👨','👧','👦','👵','👴','🐱','🦊','🐻','🦁','🐼'];
+function family(){var sel=AVS[3];
+  app.innerHTML=bar()+'<div class="head"><button class="back" id="bk">بازگشت</button><h2>اعضای خانواده</h2></div>'+
+   '<p style="color:var(--soft);margin-bottom:12px">هر نفر ستاره‌ها و پیشرفت خودش را دارد. روی اسم بزنید تا با آن ادامه دهید.</p>'+
+   '<div class="members">'+S.members.map(function(m,k){return '<button class="member'+(k===S.cur?' on':'')+'" data-m="'+k+'"><span class="av">'+esc(m.av)+'</span><span class="t"><b>'+esc(m.name)+'</b><small>★ '+fa(totalStars(m))+' · 🔥 '+fa(streak(m))+' روز</small></span></button>'}).join('')+'</div>'+
+   '<form class="addform" id="af"><b>افزودن عضو جدید</b><label for="nm" style="font-size:14px;color:var(--soft)">اسم</label><input id="nm" maxlength="20" placeholder="مثلاً سارا" autocomplete="off">'+
+   '<div class="avs" role="group" aria-label="انتخاب تصویر">'+AVS.map(function(a){return '<button type="button" aria-pressed="'+(a===sel)+'" data-a="'+a+'">'+a+'</button>'}).join('')+'</div>'+
+   '<button class="btn" type="submit">افزودن</button></form>';
+  wireBar();document.getElementById('bk').onclick=home;
+  app.querySelectorAll('[data-m]').forEach(function(b){b.onclick=function(){S.cur=+b.dataset.m;save();home()}});
+  app.querySelectorAll('[data-a]').forEach(function(b){b.onclick=function(){sel=b.dataset.a;app.querySelectorAll('[data-a]').forEach(function(x){x.setAttribute('aria-pressed',x===b)})}});
+  document.getElementById('af').onsubmit=function(e){e.preventDefault();var n=document.getElementById('nm').value.trim();if(!n){document.getElementById('nm').focus();return}
+    S.members.push({name:n,av:sel,stars:{},seen:{},xp:0,days:[],today:{d:'',n:0}});S.cur=S.members.length-1;save();home()};window.scrollTo(0,0)}
+
+/* ---------- Celebration ---------- */
+function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;var c=document.getElementById('fx'),x=c.getContext('2d');
+  c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;x.scale(devicePixelRatio,devicePixelRatio);
+  var cs=getComputedStyle(document.documentElement),cols=[cs.getPropertyValue('--saffron'),cs.getPropertyValue('--cobalt'),cs.getPropertyValue('--olive'),cs.getPropertyValue('--bad')];
+  var P=[];for(var i=0;i<90;i++)P.push({x:innerWidth/2,y:innerHeight/3,vx:(Math.random()-.5)*9,vy:Math.random()*-9-3,s:4+Math.random()*5,c:cols[i%4],r:Math.random()*6});
+  var t=0;(function f(){x.clearRect(0,0,innerWidth,innerHeight);P.forEach(function(p){p.vy+=.28;p.x+=p.vx;p.y+=p.vy;p.r+=.1;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore()});
+    if(++t<110)requestAnimationFrame(f);else x.clearRect(0,0,innerWidth,innerHeight)})()}
+
+home();
+</script>
+
+</body>
+</html>
